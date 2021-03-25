@@ -1,0 +1,71 @@
+<div class="flex flex-wrap -mx-1 overflow-hidden">
+
+  <div class="my-1 px-1 w-1/2 overflow-hidden">
+    <div class="flex w-full h-full items-center justify-center bg-grey-lighter">
+      <form :on-click="save" :on-change="validate">
+        <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-white">
+            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+            </svg>
+            <span class="mt-2 text-base leading-normal">Select a file</span>
+            {{ live_file_input(@uploads.images, class: "hidden")}}
+        </label>
+      </form>
+    </div>
+  </div>
+
+  <div class="my-1 px-1 w-1/2 overflow-hidden">
+      
+  <div :if={{ @uploads.images.entries == [] }} class="p-2 h-full">
+    <div class="inline-flex items-center bg-white leading-none h-auto text-blue-600 rounded-full p-2 shadow text-teal text-sm">
+      <span class="inline-flex bg-blue-600 text-white rounded-full h-6 px-3 justify-center items-center">Info</span>
+      <span class="inline-flex px-2">Please upload at least 1 image :)</span>
+    </div>
+  </div>
+    <table :if={{ @uploads.images.entries != [] }} class="min-w-max w-full table-auto">
+      <thead>
+          <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th class="py-3 px-6 text-left">Preview</th>
+              <th class="py-3 px-6 text-left">Filename</th>
+              <th class="py-3 px-6 text-left">Filetype</th>
+              <th class="py-3 px-6 text-center">Progress</th>
+              <th class="py-3 px-6 text-center">Valid?</th>
+          </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm font-light">
+        <tr class="border-b border-gray-200 hover:bg-gray-100" :for={{ entry <- @uploads.images.entries }}>
+            <td class="py-3 px-6 text-left whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="mr-2">
+                        {{ live_img_preview(entry, class: "w-8") }}
+                    </div>
+                </div>
+            </td>
+            <td class="py-3 px-6 text-left">
+                <div class="flex items-center">
+                    <span>{{ entry.client_name }}</span>
+                </div>
+            </td>
+            <td class="py-3 px-6 text-left">
+                <div class="flex items-center">
+                    <span>{{ entry.client_type }}</span>
+                </div>
+            </td>
+            <td class="py-3 px-6 text-left">
+                <div class="flex items-center">
+                  {{ entry.progress }}%
+                </div>
+            </td>
+            <td class="py-3 px-6 text-left">
+                <div class="flex items-center">
+                    <span :if={{ entry.valid? }} class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Valid</span>
+                    <span :if={{ not entry.valid? }} class="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">Valid</span>
+                </div>
+            </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
